@@ -1,0 +1,23 @@
+hotel 
+
+hotel info
+ | room no |cooling | visitor name |room_type        | 
+ |   1     | ac     |   ab         | classic/jumbo/  |
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+visitors 
+
+visitor ID |visitor name | room no | check in | check out | total_members | bill_total |  phone      
+1             ab             2         __            _+        1                1k        39448394
