@@ -15,7 +15,7 @@ public class mini_project_main {
             System.out.println("+~~~~~~~~~~~~~~~~~~~~~~~~~~+");
     
             System.out.println(
-                    " -h for help \n -b for book and for example \"java main -b name totalmembers phonenumber typeofroom  \" \n -s for search a booking by name for example java main -s name \n -all for all your bookings java main -all \n -d for delete for example java main -d name");
+                    " -h for help \n -b for book and for example \"java main -b name totalmembers phonenumber typeofroom  \" \n -s for search a booking by name for example java main -s name \n -all for all your bookings java main -all \n -d for delete for example java main -d name \n -v for version");
     
                 break;
 
@@ -28,16 +28,16 @@ public class mini_project_main {
             break ;
 
             case "-s" :
-            searchBooking p = new searching() ;
+            searching p = new searching() ;
             p.Searchbyname(args[1]);
             break ;
 
             case "-d" :
-            cancelbooking c = new Deletion() ;
+            Deletion c = new Deletion() ;
             c.deletebyname(args[1]) ;
 
             case "-all" :
-            searchBooking s = new searching() ;
+            searching s = new searching() ;
             s.allBookings();
             break ;
 
