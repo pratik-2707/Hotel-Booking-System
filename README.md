@@ -12,3 +12,7 @@
 # Customer Booking Cancellation
 
 ![Alt text](./images/s3.jpg)
+
+# Customer Booking Search
+
+![Alt text](./images/s4.jpg)
