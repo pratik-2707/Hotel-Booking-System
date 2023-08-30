@@ -4,21 +4,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 class customers {
     int id;
     String name;
     int total_members;
-    int phone;
+    String phone;
     String checkin;
     String typeOfroom;
     static int current = 0;
 
-    public customers(int id, String name, int total_members, int phone, String checkin, String typeOfroom) {
+    public customers(int id, String name, int total_members, String phone, String checkin, String typeOfroom) {
         this.id = id;
         this.name = name;
         this.total_members = total_members;
@@ -29,14 +32,15 @@ class customers {
 
     static customers c[] = new customers[100];
 
-    public static void addnew(int id, String name, int members, int phone, String checkin, String typeOfroom) {
+    public static void addnew(int id, String name, int members, String phone, String checkin, String typeOfroom) {
         current++;
         c[current] = new customers(id, name, members, phone, checkin, typeOfroom);
     }
 }
 
 public class booking {
-    public static  void book(String NAME , String TOTALMEMBERS , String PHONENUMBER , String TYPEOFROOM ) throws IOException, SQLException {
+    public static void book(String NAME, String TOTALMEMBERS, String PHONENUMBER, String TYPEOFROOM)
+            throws IOException, SQLException {
         int id;
         int bill;
         String visitorname;
@@ -45,24 +49,18 @@ public class booking {
         String content;
         String checkin;
         String typeOfroom;
-        int phone;
+        String phone;
 
         // date and time
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-    //    Scanner jj = new Scanner(System.in);
         // input
-    //    System.out.println("enter name ");
         visitorname = NAME;
- //       System.out.println("enter total members ");
-        total_members = Integer.parseInt(TOTALMEMBERS) ;
-  //      System.out.println("enter phone no ");
-        phone = Integer.parseInt(PHONENUMBER);
-  //      System.out.println("Enter the type of room you want.\nA/C\tNon-A/C\t\tDeluxe\t\tSuper Deluxe\n");
+        total_members = Integer.parseInt(TOTALMEMBERS);
+        phone = PHONENUMBER;
         typeOfroom = TYPEOFROOM;
-        
 
-        id = customers.current + 1;
+        id = getmaxid() + 1;
         checkin = dtf.format(now);
         bill = 1000 * total_members;
         content = id + "  " + visitorname + "  " + total_members + "  " + phone + "  " + checkin + "  " + bill + " "
@@ -77,6 +75,26 @@ public class booking {
 
         // storing in database
         database_linkage.insert(id, visitorname, total_members, phone, checkin, bill, typeOfroom);
+        System.out.println("\nBooking with name " + visitorname + " done   Successfully....\n");
 
+    }
+
+
+
+    public static int getmaxid() throws SQLException {
+        try {
+            Connection con = connectionfactory.getconnection();
+            int maxID = 0;
+            String sql = "SELECT MAX(id) AS max_id FROM visitors";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                maxID = rs.getInt("max_id"); // access the max value via its alias
+            }
+            return maxID;
+        } catch (SQLException e) {
+            System.out.println("SQL exception occured" + e);
+        }
+        return 0;
     }
 }
